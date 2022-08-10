@@ -17,14 +17,23 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http)throws Exception{
          http.formLogin()
-                .loginPage("/member/login")
-                .defaultSuccessUrl("/")
+                .loginPage("/members/login")
+                 .defaultSuccessUrl("/")
                 .usernameParameter("email")
                 .failureUrl("/members/login/error")
-                .and()
+                .and().csrf().and()
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))
                 .logoutSuccessUrl("/");
+
+        http.authorizeRequests()
+                .mvcMatchers("/css/**", "/js/**", "/img/**").permitAll()
+                .mvcMatchers("/", "/members/**", "/item/**", "/images/**").permitAll()
+                .mvcMatchers("/admin/**").hasRole("ADMIN")
+                .anyRequest().authenticated();
+
+        http.exceptionHandling()
+                .authenticationEntryPoint(new CustomAuthenticationEntryPoint());
 
          return http.build();
     }

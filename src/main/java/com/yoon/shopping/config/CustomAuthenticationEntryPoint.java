@@ -1,0 +1,29 @@
+package com.yoon.shopping.config;
+
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.AuthenticationEntryPoint;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+public class CustomAuthenticationEntryPoint implements
+        AuthenticationEntryPoint {
+
+    @Override
+    public void commence(HttpServletRequest request,
+                         HttpServletResponse response,
+                         AuthenticationException authException) throws IOException,
+            ServletException {
+            /*
+            * 인증되지 않은 사용자가 ajax로 요청할 경우 거절
+            * */
+            if("XMLHttpRequest".equals(request.getHeader("x-requested-with"))){
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED,
+                        "Unauthorized");
+            }else{
+                response.sendRedirect("/members/login");
+            }
+    }
+}

@@ -1,4 +1,4 @@
-package com.yoon.shopping.repository;
+package com.yoon.shopping.service;
 
 
 

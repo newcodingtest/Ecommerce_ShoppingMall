@@ -21,7 +21,7 @@ public class SecurityConfig {
                  .defaultSuccessUrl("/")
                 .usernameParameter("email")
                 .failureUrl("/members/login/error")
-                .and().csrf().and()
+                .and()
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))
                 .logoutSuccessUrl("/");

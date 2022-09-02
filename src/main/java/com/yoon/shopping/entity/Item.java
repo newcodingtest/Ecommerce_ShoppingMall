@@ -1,6 +1,7 @@
 package com.yoon.shopping.entity;
 
 import com.yoon.shopping.constant.ItemSellStatus;
+import com.yoon.shopping.dto.ItemFormDto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -36,5 +37,14 @@ public class Item extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     private ItemSellStatus itemSellStatus;
+
+    //데이터 변경 포인트 지점.
+    public void updateItem(ItemFormDto itemFormDto){
+        this.itemNm = itemFormDto.getItemNm();
+        this.price = itemFormDto.getPrice();
+        this.stockNumber = itemFormDto.getStockNumber();
+        this.itemDetail = itemFormDto.getItemDetail();
+        this.itemSellStatus = itemFormDto.getItemSellStatus();
+    }
 
 }

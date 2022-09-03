@@ -41,12 +41,12 @@ public class ItemContoller {
         return "/item/itemForm";
     }
 
-    @Operation(description = "상품 등록 페이지로 이동")
+    @ApiOperation(value = "상품 등록 API")
     @PostMapping(value = "/admin/item/new")
-    public String itemNew(@Parameter(description = "이름", required = true) @Valid ItemFormDto itemFormDto,
+    public String itemNew(@Valid ItemFormDto itemFormDto,
                           BindingResult bindingResult,
                           Model model,
-                          @Parameter(description = "상품 이미지 파일", required = false) @RequestParam("itemImgFile") List<MultipartFile>itemImgFileList){
+                          @RequestParam("itemImgFile") List<MultipartFile>itemImgFileList){
 
         if(bindingResult.hasErrors()){
             return "item/itemForm";
@@ -114,5 +114,13 @@ public class ItemContoller {
         model.addAttribute("itemSearchDto", itemSearchDto);
         model.addAttribute("maxPage", 5);
         return "item/itemMng";
+    }
+
+    @GetMapping(value = "item/{itemId}")
+    public String itemDtl(Model model , @PathVariable("itemId") Long itemId){
+        ItemFormDto itemFormDto = itemService.getItemDtl(itemId);
+
+        model.addAttribute("item", itemFormDto);
+        return "item/itemDtl";
     }
 }

@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@TestPropertySource(locations = "classpath:application-test.properties")
+@TestPropertySource(locations = "classpath:application.properties")
 public class ItemControllerTest {
 
     @Autowired
@@ -38,4 +38,14 @@ public class ItemControllerTest {
                 .andExpect(status().isOk());
     }
     
+    @Test
+    @DisplayName("상품 상세보기 페이지 이동 테스트")
+    @WithMockUser(username = "admin", roles = "ADMIN")
+    public void itemDtl()throws Exception{
+
+        long itemId = 4;
+        mockMvc.perform(MockMvcRequestBuilders.get("/item/"+itemId))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
 }

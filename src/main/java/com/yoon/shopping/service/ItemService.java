@@ -3,6 +3,7 @@ package com.yoon.shopping.service;
 import com.yoon.shopping.dto.ItemFormDto;
 import com.yoon.shopping.dto.ItemImgDto;
 import com.yoon.shopping.dto.ItemSearchDto;
+import com.yoon.shopping.dto.MainItemDto;
 import com.yoon.shopping.entity.Item;
 import com.yoon.shopping.entity.ItemImg;
 import com.yoon.shopping.repository.ItemImgRepository;
@@ -85,5 +86,12 @@ public class ItemService {
                                        Pageable pageable){
         return itemRepository.getAdminItemPage(itemSearchDto, pageable);
     }
+
+    @Transactional(readOnly = true)
+    public Page<MainItemDto> getMainItemPage(ItemSearchDto itemSearchDto,
+                                             Pageable pageable){
+        return itemRepository.getMainItemPage(itemSearchDto, pageable);
+    }
+
 
 }

@@ -1,8 +1,18 @@
 package com.yoon.shopping.controller;
 
 import com.yoon.shopping.dto.ItemFormDto;
+import com.yoon.shopping.dto.ItemSearchDto;
+import com.yoon.shopping.entity.Item;
 import com.yoon.shopping.service.ItemService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,23 +25,28 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
+@Api(tags = {"상품목록   API 정보를 제공하는 Controller"})
 @Controller
 @RequiredArgsConstructor
 public class ItemContoller {
 
     private final ItemService itemService;
 
+    @ApiOperation(value = "상품 등록 페이지로 이동")
     @GetMapping(value = "/admin/item/new")
     public String itemForm(Model model){
         model.addAttribute("itemFormDto", new ItemFormDto());
         return "/item/itemForm";
     }
 
+    @Operation(description = "상품 등록 페이지로 이동")
     @PostMapping(value = "/admin/item/new")
-    public String itemNew(@Valid ItemFormDto itemFormDto, BindingResult bindingResult,
+    public String itemNew(@Parameter(description = "이름", required = true) @Valid ItemFormDto itemFormDto,
+                          BindingResult bindingResult,
                           Model model,
-                          @RequestParam("itemImgFile") List<MultipartFile>itemImgFileList){
+                          @Parameter(description = "상품 이미지 파일", required = false) @RequestParam("itemImgFile") List<MultipartFile>itemImgFileList){
 
         if(bindingResult.hasErrors()){
             return "item/itemForm";
@@ -86,5 +101,18 @@ public class ItemContoller {
         }
 
         return "redirect:/";
+    }
+
+    @GetMapping(value ={"/admin/items", "/admin/items/{page}"})
+    public String itemManage(ItemSearchDto itemSearchDto,
+                             @PathVariable("page")Optional<Integer> page, Model model){
+        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 3);
+
+        Page<Item> items =
+                itemService.getAdminItemPage(itemSearchDto, pageable);
+        model.addAttribute("items", items);
+        model.addAttribute("itemSearchDto", itemSearchDto);
+        model.addAttribute("maxPage", 5);
+        return "item/itemMng";
     }
 }

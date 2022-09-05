@@ -25,5 +25,4 @@ public class OrderItem extends BaseTimeEntity {
     private int orderPrice;
 
     private int count;
-
 }

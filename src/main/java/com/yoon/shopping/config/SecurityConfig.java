@@ -45,7 +45,7 @@ public class SecurityConfig {
                         "/v3/api-docs",
                         "/swagger*/**").permitAll()
                 .mvcMatchers("/css/**", "/js/**", "/img/**","/images/**").permitAll()
-                .mvcMatchers("/", "/members/**", "/item/**", "/images/**").permitAll()
+                .mvcMatchers("/", "/members/**", "/item/**").permitAll()
                 .mvcMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated();
 

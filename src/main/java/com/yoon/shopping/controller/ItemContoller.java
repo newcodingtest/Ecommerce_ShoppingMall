@@ -67,6 +67,7 @@ public class ItemContoller {
         return "redirect:/";
     }
 
+    @ApiOperation(value = "상품 상세 페이지로 이동")
     @GetMapping(value = "/admin/item/{itemId}")
     public String itemDtl(@PathVariable("itemId") Long itemId, Model model){
         try{
@@ -80,6 +81,7 @@ public class ItemContoller {
         return "item/itemForm";
     }
 
+    @ApiOperation(value = "상품 등록 API")
     @PostMapping(value = "/admin/item/{itemId}")
     public String itemUpdate(@Valid ItemFormDto itemFormDto,
                              BindingResult bindingResult, @RequestParam("itemImgFile") List<MultipartFile>itemImgFileList, Model model){
@@ -103,6 +105,7 @@ public class ItemContoller {
         return "redirect:/";
     }
 
+    @ApiOperation(value = "상품 화면 클리 페이지로 이동")
     @GetMapping(value ={"/admin/items", "/admin/items/{page}"})
     public String itemManage(ItemSearchDto itemSearchDto,
                              @PathVariable("page")Optional<Integer> page, Model model){
@@ -116,6 +119,7 @@ public class ItemContoller {
         return "item/itemMng";
     }
 
+    @ApiOperation(value = "상품 상페 페이지로 이동")
     @GetMapping(value = "item/{itemId}")
     public String itemDtl(Model model , @PathVariable("itemId") Long itemId){
         ItemFormDto itemFormDto = itemService.getItemDtl(itemId);

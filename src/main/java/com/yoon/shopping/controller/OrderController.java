@@ -2,6 +2,7 @@ package com.yoon.shopping.controller;
 
 import com.yoon.shopping.dto.OrderDto;
 import com.yoon.shopping.service.OrderService;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,7 @@ public class OrderController {
 
     private final OrderService orderService;
 
+    @ApiOperation(value = "주문 API")
     @PostMapping(value = "/order")
     public @ResponseBody ResponseEntity order (@RequestBody @Valid OrderDto orderDto,
                                                BindingResult bindingResult, Principal principal){

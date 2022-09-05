@@ -56,7 +56,7 @@ public class OrderServiceTest {
     }
     
     @Test
-    @DisplayName("주문 테스트")
+    @DisplayName("주문 테스트  ")
     public void order(){
         Item item = saveItem();
         Member member = saveMember();

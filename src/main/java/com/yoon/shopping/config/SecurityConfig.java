@@ -37,7 +37,7 @@ public class SecurityConfig {
                 .and()
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))
-                .logoutSuccessUrl("/"); 
+                .logoutSuccessUrl("/");
 
 
         http.authorizeRequests()

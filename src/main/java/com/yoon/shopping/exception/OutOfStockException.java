@@ -7,4 +7,3 @@ public class OutOfStockException extends RuntimeException{
         super(message);
     }
 }
-   

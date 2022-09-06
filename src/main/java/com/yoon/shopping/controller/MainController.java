@@ -3,6 +3,7 @@ package com.yoon.shopping.controller;
 import com.yoon.shopping.dto.ItemSearchDto;
 import com.yoon.shopping.dto.MainItemDto;
 import com.yoon.shopping.service.ItemService;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,6 +20,7 @@ public class MainController {
 
     private final ItemService itemService;
 
+    @ApiOperation(value = "메인 화면 페이지")
     @GetMapping(value="/")
     public String main(ItemSearchDto itemSearchDto, Optional<Integer> page,
                        Model model){

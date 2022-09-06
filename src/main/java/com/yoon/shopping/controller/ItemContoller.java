@@ -27,7 +27,7 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
-@Api(tags = {"상품목록   API 정보를 제공하는 Controller"})
+@Api(tags = {"상품목록 API 정보를 제공하는 Controller"})
 @Controller
 @RequiredArgsConstructor
 public class ItemContoller {

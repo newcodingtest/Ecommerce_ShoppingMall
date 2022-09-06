@@ -3,6 +3,7 @@ package com.yoon.shopping.controller;
 import com.yoon.shopping.dto.ItemSearchDto;
 import com.yoon.shopping.dto.MainItemDto;
 import com.yoon.shopping.service.ItemService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.Optional;
 
+@Api(tags = {"메인화면 Controller"})
 @Controller
 @RequiredArgsConstructor
 public class MainController {

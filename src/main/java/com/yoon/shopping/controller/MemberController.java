@@ -3,6 +3,7 @@ package com.yoon.shopping.controller;
 import com.yoon.shopping.dto.MemberFormDto;
 import com.yoon.shopping.entity.Member;
 import com.yoon.shopping.service.MemberService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
 
+@Api(tags = {"회원정보 관련 Controller"})
 @RequestMapping("/members")
 @Controller
 @RequiredArgsConstructor

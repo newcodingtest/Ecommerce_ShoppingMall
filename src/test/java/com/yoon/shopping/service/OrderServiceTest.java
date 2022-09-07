@@ -2,6 +2,7 @@ package com.yoon.shopping.service;
 
 
 import com.yoon.shopping.constant.ItemSellStatus;
+import com.yoon.shopping.constant.OrderStatus;
 import com.yoon.shopping.dto.OrderDto;
 import com.yoon.shopping.entity.Item;
 import com.yoon.shopping.entity.Member;
@@ -56,8 +57,9 @@ public class OrderServiceTest {
     }
     
     @Test
-    @DisplayName("주문 테스트  ")
+    @DisplayName("주문 테스트")
     public void order(){
+        //given
         Item item = saveItem();
         Member member = saveMember();
 
@@ -70,11 +72,35 @@ public class OrderServiceTest {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(EntityNotFoundException::new);
 
+        //when
         List<OrderItem> orderItems = order.getOrderItems();
 
+        //then
         int totalPrice = orderDto.getCount()*item.getPrice();
         assertEquals(totalPrice, order.getTotalPrice());
     }
 
+    @Test
+    @DisplayName("주문 취소 테스트")
+    public void cancelOrder(){
+        //given
+        Item item = saveItem();
+        Member member = saveMember();
+
+        OrderDto orderDto = new OrderDto();
+        orderDto.setItemId(item.getId());
+        orderDto.setCount(100);
+        Long orderId = orderService.order(orderDto, member.getEmail());
+
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(EntityNotFoundException::new);
+
+        //when
+        orderService.cancelOrder(orderId);
+
+        //then
+        assertEquals(OrderStatus.CANCEL, order.getOrderStatus());
+        assertEquals(100, item.getStockNumber());
+    }
 
 }

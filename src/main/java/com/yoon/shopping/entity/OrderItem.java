@@ -39,4 +39,11 @@ public class OrderItem extends BaseTimeEntity {
     public int getTotalPrice(){
         return orderPrice*count;
     }
+
+    /**
+     * 주문 취소를 위한 메서드 <>양방향</>
+     */
+    public void cancel(){
+        this.getItem().addStock(count);
+    }
 }

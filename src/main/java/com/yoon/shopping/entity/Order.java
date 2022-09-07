@@ -56,4 +56,15 @@ public class Order extends BaseTimeEntity {
         return totalPrice;
     }
 
+    /**
+     * 주문 취소를 위한 메서드 <>양방향</>
+     * */
+    public void cancelOrder(){
+        this.orderStatus = OrderStatus.CANCEL;
+
+        for(OrderItem orderItem : orderItems){
+            orderItem.cancel();
+        }
+    }
+
 }

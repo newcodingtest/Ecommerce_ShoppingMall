@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 주문 정보
+ * 주문 이력
  * */
 @Getter @Setter
 public class OrderHisDto {

@@ -2,6 +2,8 @@ package com.yoon.shopping.service;
 
 import com.yoon.shopping.dto.CartDetailDto;
 import com.yoon.shopping.dto.CartItemDto;
+import com.yoon.shopping.dto.CartOrderDto;
+import com.yoon.shopping.dto.OrderDto;
 import com.yoon.shopping.entity.Cart;
 import com.yoon.shopping.entity.CartItem;
 import com.yoon.shopping.entity.Item;
@@ -11,11 +13,17 @@ import com.yoon.shopping.repository.CartRepository;
 import com.yoon.shopping.repository.ItemRepository;
 import com.yoon.shopping.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.thymeleaf.util.StringUtils;
 
 import javax.persistence.EntityNotFoundException;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +37,7 @@ public class CartService {
     private final CartRepository cartRepository;
     private final CartItemRepository cartItemRepository;
 
+    private final OrderService orderService;
 
     /**
      * 로그인 사용자의 장바구니 등록
@@ -124,5 +133,29 @@ public class CartService {
         cartItemRepository.delete(cartItem);
     }
 
+    public Long orderCartItem(List<CartOrderDto> cartOrderDtoList, String email){
+        List<OrderDto> orderDtoList = new ArrayList<>();
+        for (CartOrderDto cartOrderDto : cartOrderDtoList){
+            CartItem cartItem = cartItemRepository
+                    .findById(cartOrderDto.getCartItemId())
+                    .orElseThrow(EntityNotFoundException::new);
+
+            OrderDto orderDto = new OrderDto();
+            orderDto.setItemId(cartItem.getItem().getId());
+            orderDto.setCount(cartItem.getCount());
+            orderDtoList.add(orderDto);
+        }
+
+        Long orderId = orderService.orders(orderDtoList, email);
+
+        for (CartOrderDto cartOrderDto : cartOrderDtoList){
+            CartItem cartItem = cartItemRepository
+                    .findById(cartOrderDto.getCartItemId())
+                    .orElseThrow(EntityNotFoundException::new);
+
+            cartItemRepository.delete(cartItem);
+        }
+        return orderId;
+    }
 
 }

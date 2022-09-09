@@ -35,7 +35,8 @@ public class OrderService {
     /**
      * 로그인한 사용자가 주문을 한다.
      * */
-    public Long order(OrderDto orderDto, String email){
+    public Long order(OrderDto orderDto,
+                      String email){
         Item item = itemRepository.findById(orderDto.getItemId())
                 .orElseThrow(EntityNotFoundException::new);
         Member member = memberRepository.findByEmail(email);
@@ -55,7 +56,8 @@ public class OrderService {
      * 로그인한 사용자의 주문이력 확인한다.
      * */
     @Transactional(readOnly = true)
-    public Page<OrderHisDto> getOrderList(String email, Pageable pageable){
+    public Page<OrderHisDto> getOrderList(String email,
+                                          Pageable pageable){
         List<Order>orders = orderRepository.findOrders(email, pageable);
         Long totalCount = orderRepository.countOrder(email);
 
@@ -99,6 +101,30 @@ public class OrderService {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(EntityNotFoundException::new);
         order.cancelOrder();
+    }
+
+    /**
+     * 주문하기
+     * */
+    public Long orders(List<OrderDto> orderDtoList,String email){
+        Member member = memberRepository
+                .findByEmail(email);
+        List<OrderItem> orderItemList = new ArrayList<>();
+
+        for (OrderDto orderDto : orderDtoList){
+            Item item = itemRepository
+                    .findById(orderDto.getItemId())
+                    .orElseThrow(EntityNotFoundException::new);
+
+            OrderItem orderItem = OrderItem
+                    .createOrderItem(item, orderDto.getCount());
+            orderItemList.add(orderItem);
+        }
+
+        Order order = Order.createOrder(member, orderItemList);
+        orderRepository.save(order);
+
+        return order.getId();
     }
 
 }

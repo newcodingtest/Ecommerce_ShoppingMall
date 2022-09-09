@@ -21,7 +21,6 @@ public class Member extends BaseEntity {
     private Long id;
 
     private String name;
-
     /*
     * 동일값 존재할 수 없음 = unique
     * */

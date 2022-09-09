@@ -32,7 +32,7 @@
                     xhr.setRequestHeader(header, token);
                 },
                 dataType : "json",
-                cache   : false,
+                cache   : false, //이전 캐시 방지를 위한 false
                 success  : function(result, status){
                     alert("주문이 취소 되었습니다.");
                     location.href='/orders/' + [[${page}]];
